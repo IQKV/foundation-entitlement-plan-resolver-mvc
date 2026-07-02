@@ -148,16 +148,16 @@ if (entitlement.isPerSeat()) {
 
 ### `PlanEntitlement`
 
-| Member             | Type                       | Description                                                       |
-| ------------------ | -------------------------- | ----------------------------------------------------------------- |
-| `maxUsers`         | `int`                      | Max users allowed; `0` means unlimited                            |
-| `maxProjects`      | `int`                      | Max projects allowed; `0` means unlimited                         |
-| `features`         | `Map<String, PlanFeature>` | Open feature map keyed by feature code                            |
-| `pricingModel`     | `String`                   | `"FLAT"` or `"PER_SEAT"`; `null` treated as flat                  |
-| `has(String code)` | `boolean`                  | Returns `true` if the feature exists and its value is `"true"`    |
-| `isPerSeat()`      | `boolean`                  | Returns `true` when `pricingModel` is `"PER_SEAT"`                |
+| Member             | Type                       | Description                                                          |
+| ------------------ | -------------------------- | -------------------------------------------------------------------- |
+| `maxUsers`         | `int`                      | Max users allowed; `0` means unlimited                               |
+| `maxProjects`      | `int`                      | Max projects allowed; `0` means unlimited                            |
+| `features`         | `Map<String, PlanFeature>` | Open feature map keyed by feature code                               |
+| `pricingModel`     | `String`                   | `"FLAT"` or `"PER_SEAT"`; `null` treated as flat                     |
+| `has(String code)` | `boolean`                  | Returns `true` if the feature exists and its value is `"true"`       |
+| `isPerSeat()`      | `boolean`                  | Returns `true` when `pricingModel` is `"PER_SEAT"`                   |
 | `isFlatPricing()`  | `boolean`                  | Returns `true` when the plan is not per-seat; `null` treated as flat |
-| `NONE`             | constant                   | Safe fallback with all quotas set to `1` and an empty feature map |
+| `NONE`             | constant                   | Safe fallback with all quotas set to `1` and an empty feature map    |
 
 ### `PlanFeatureGuard`
 
