@@ -54,15 +54,15 @@ No `@EnableXxx` or `@Import` annotation is needed. The library registers itself 
 
 ```yaml
 iqkv:
-  billing:
-    service-url: http://foundation-billing-service  # default
-    plan-refresh-interval: PT10M                    # default, ISO-8601 duration
+    billing:
+        service-url: http://foundation-billing-service # default
+        plan-refresh-interval: PT10M # default, ISO-8601 duration
 ```
 
-| Property | Default | Description |
-|---|---|---|
-| `iqkv.billing.service-url` | `http://foundation-billing-service` | Base URL of the billing service |
-| `iqkv.billing.plan-refresh-interval` | `PT10M` | How often to refresh the plan cache (ISO-8601 duration) |
+| Property                             | Default                             | Description                                             |
+| ------------------------------------ | ----------------------------------- | ------------------------------------------------------- |
+| `iqkv.billing.service-url`           | `http://foundation-billing-service` | Base URL of the billing service                         |
+| `iqkv.billing.plan-refresh-interval` | `PT10M`                             | How often to refresh the plan cache (ISO-8601 duration) |
 
 ## Usage
 
@@ -141,29 +141,29 @@ if (entitlement.isPerSeat()) {
 
 ### `PlanResolver`
 
-| Method | Description |
-|---|---|
+| Method                     | Description                                                                              |
+| -------------------------- | ---------------------------------------------------------------------------------------- |
 | `forPlan(String planCode)` | Returns `PlanFeatures` for the plan; falls back to `PlanFeatures.NONE` for unknown codes |
-| `refresh()` | Manually trigger a cache refresh (also runs on the configured schedule) |
+| `refresh()`                | Manually trigger a cache refresh (also runs on the configured schedule)                  |
 
 ### `PlanEntitlement`
 
-| Member | Type | Description |
-|---|---|---|
-| `maxUsers` | `int` | Max users allowed; `0` means unlimited |
-| `maxProjects` | `int` | Max projects allowed; `0` means unlimited |
-| `features` | `Map<String, PlanFeature>` | Open feature map keyed by feature code |
-| `pricingModel` | `String` | `"FLAT"` or `"PER_SEAT"`; `null` treated as flat |
-| `has(String code)` | `boolean` | Returns `true` if the feature exists and its value is `"true"` |
-| `isPerSeat()` | `boolean` | Returns `true` when `pricingModel` is `"PER_SEAT"` |
-| `NONE` | constant | Safe fallback with all quotas set to `1` and an empty feature map |
+| Member             | Type                       | Description                                                       |
+| ------------------ | -------------------------- | ----------------------------------------------------------------- |
+| `maxUsers`         | `int`                      | Max users allowed; `0` means unlimited                            |
+| `maxProjects`      | `int`                      | Max projects allowed; `0` means unlimited                         |
+| `features`         | `Map<String, PlanFeature>` | Open feature map keyed by feature code                            |
+| `pricingModel`     | `String`                   | `"FLAT"` or `"PER_SEAT"`; `null` treated as flat                  |
+| `has(String code)` | `boolean`                  | Returns `true` if the feature exists and its value is `"true"`    |
+| `isPerSeat()`      | `boolean`                  | Returns `true` when `pricingModel` is `"PER_SEAT"`                |
+| `NONE`             | constant                   | Safe fallback with all quotas set to `1` and an empty feature map |
 
 ### `PlanFeatureGuard`
 
-| Method | Description |
-|---|---|
-| `hasFeature(String planCode, String featureCode)` | Returns `true` if the feature is enabled; never throws |
-| `require(String planCode, String featureCode)` | Throws `PlanFeatureNotAvailableException` if the feature is disabled or absent |
+| Method                                            | Description                                                                    |
+| ------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `hasFeature(String planCode, String featureCode)` | Returns `true` if the feature is enabled; never throws                         |
+| `require(String planCode, String featureCode)`    | Throws `PlanFeatureNotAvailableException` if the feature is disabled or absent |
 
 ### `PlanFeature`
 
@@ -211,6 +211,7 @@ Releases are published automatically via the
 which is triggered when a GitHub Release is created from the `maven-central` branch.
 
 The workflow:
+
 1. Checks out the source at the release tag
 2. Strips the `-SNAPSHOT` suffix from the POM version
 3. Runs `mvn clean verify` to confirm the build passes
