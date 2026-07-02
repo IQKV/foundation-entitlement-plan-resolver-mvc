@@ -70,6 +70,11 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
         </dependency>
+        <!-- @PostConstruct / @PreDestroy (Jakarta Annotations API) -->
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+        </dependency>
         <!-- SLF4J API — runtime binding provided by the consuming service -->
         <dependency>
             <groupId>org.slf4j</groupId>
