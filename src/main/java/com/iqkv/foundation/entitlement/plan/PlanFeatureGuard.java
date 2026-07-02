@@ -61,7 +61,7 @@ public class PlanFeatureGuard {
    * @return {@code true} if the feature is enabled for this plan, {@code false} otherwise
    */
   public boolean hasFeature(final String planCode, final String featureCode) {
-    final PlanEntitlement features = planResolver.forPlan(planCode);
+    final PlanEntitlement features = planResolver.resolveEntitlement(planCode);
     return features.has(featureCode);
   }
 

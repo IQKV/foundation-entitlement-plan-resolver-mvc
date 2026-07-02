@@ -20,7 +20,7 @@
  * <h2>What this library provides</h2>
  * <ul>
  *   <li>{@link com.iqkv.foundation.entitlement.plan.PlanFeature} — DTO for a single feature entry.</li>
- *   <li>{@link com.iqkv.foundation.entitlement.plan.PlanFeatures} — DTO for the full plan feature set
+ *   <li>{@link com.iqkv.foundation.entitlement.plan.PlanEntitlement} — DTO for the full plan feature set
  *       including typed quota fields ({@code maxUsers}, {@code maxProjects}) and an open feature map.</li>
  *   <li>{@link com.iqkv.foundation.entitlement.plan.PlanFeatureNotAvailableException} — thrown by
  *       {@link com.iqkv.foundation.entitlement.plan.PlanFeatureGuard#require} when the caller's plan

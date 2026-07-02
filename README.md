@@ -114,7 +114,7 @@ public class ProjectService {
     // ...
 
     public Project createProject(String planCode, CreateProjectRequest request) {
-        final PlanEntitlement entitlement = planResolver.forPlan(planCode);
+        final PlanEntitlement entitlement = planResolver.resolveEntitlement(planCode);
         if (entitlement.maxProjects() > 0 && currentCount >= entitlement.maxProjects()) {
             throw new PlanQuotaExceededException("projects", entitlement.maxProjects());
         }
@@ -126,7 +126,7 @@ public class ProjectService {
 ### Conditional display logic
 
 ```java
-PlanEntitlement entitlement = planResolver.forPlan(planCode);
+PlanEntitlement entitlement = planResolver.resolveEntitlement(planCode);
 
 if (entitlement.has("custom_domain")) {
     // show custom domain settings
@@ -141,10 +141,10 @@ if (entitlement.isPerSeat()) {
 
 ### `PlanResolver`
 
-| Method                     | Description                                                                              |
-| -------------------------- | ---------------------------------------------------------------------------------------- |
-| `forPlan(String planCode)` | Returns `PlanFeatures` for the plan; falls back to `PlanFeatures.NONE` for unknown codes |
-| `refresh()`                | Manually trigger a cache refresh (also runs on the configured schedule)                  |
+| Method                                | Description                                                                                    |
+| ------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `resolveEntitlement(String planCode)` | Returns `PlanEntitlement` for the plan; falls back to `PlanEntitlement.NONE` for unknown codes |
+| `refresh()`                           | Manually trigger a cache refresh (also runs on the configured schedule)                        |
 
 ### `PlanEntitlement`
 

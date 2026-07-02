@@ -45,7 +45,7 @@ import org.springframework.web.client.RestTemplate;
  *
  * <p>Usage — inject and call at write time:
  * <pre>
- *   final PlanEntitlement features = planResolver.forPlan(request.getHeader("X-Plan-Code"));
+ *   final PlanEntitlement features = planResolver.resolveEntitlement(request.getHeader("X-Plan-Code"));
  *   if (features.maxProjects() > 0 &amp;&amp; current >= features.maxProjects()) {
  *       throw new PlanQuotaExceededException(...);
  *   }
@@ -111,7 +111,7 @@ public class PlanResolver {
    * Returns the {@link PlanEntitlement} for the given plan code.
    * Falls back to {@link PlanEntitlement#NONE} when the plan code is unknown or data is unavailable.
    */
-  public PlanEntitlement forPlan(final String planCode) {
+  public PlanEntitlement resolveEntitlement(final String planCode) {
     if (planCode == null || planCode.isBlank()) {
       return PlanEntitlement.NONE;
     }

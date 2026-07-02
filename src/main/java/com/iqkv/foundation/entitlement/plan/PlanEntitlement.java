@@ -45,7 +45,7 @@ import java.util.Map;
  *
  * <p>Usage example — quota enforcement and feature check at write time:
  * <pre>
- *   final PlanEntitlement f = planCatalogCache.forPlan(request.getHeader("X-Plan-Code"));
+ *   final PlanEntitlement f = planCatalogCache.resolveEntitlement(request.getHeader("X-Plan-Code"));
  *   if (f.maxProjects() > 0 &amp;&amp; current &gt;= f.maxProjects()) {
  *       throw new PlanQuotaExceededException(...);
  *   }

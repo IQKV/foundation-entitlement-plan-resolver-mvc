@@ -20,7 +20,7 @@ package com.iqkv.foundation.entitlement.plan;
  * A single named feature entry as returned by the billing service
  * {@code GET /api/v1/billing/internal/plans} endpoint.
  *
- * <p>The feature code is also the map key on {@link PlanFeatures#features()}; carrying it
+ * <p>The feature code is also the map key on {@link PlanEntitlement#features()}; carrying it
  * here keeps each entry self-contained for serialisation and display. Unknown JSON fields
  * are ignored by the Jackson deserializer.
  *
