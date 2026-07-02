@@ -24,7 +24,7 @@ import java.util.Map;
  *
  * <p>Only the fields consuming services care about are mapped; unknown JSON fields are ignored.
  *
- * <h3>Design — middle path</h3>
+ * <h3>Design</h3>
  * <ul>
  *   <li><b>Typed quota fields</b> ({@code maxUsers}, {@code maxProjects}) — kept as named
  *       {@code int} fields for compile-time safety. Enforce these at write time.</li>
@@ -92,5 +92,14 @@ public record PlanEntitlement(
    */
   public boolean isPerSeat() {
     return "PER_SEAT".equalsIgnoreCase(pricingModel);
+  }
+
+  /**
+   * Returns {@code true} if the plan uses flat pricing.
+   * {@code null} or unrecognised values are treated as flat — safe for existing plans
+   * that pre-date the per-seat billing feature.
+   */
+  public boolean isFlatPricing() {
+    return !isPerSeat();
   }
 }

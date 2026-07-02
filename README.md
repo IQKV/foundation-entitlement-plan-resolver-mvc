@@ -156,6 +156,7 @@ if (entitlement.isPerSeat()) {
 | `pricingModel`     | `String`                   | `"FLAT"` or `"PER_SEAT"`; `null` treated as flat                  |
 | `has(String code)` | `boolean`                  | Returns `true` if the feature exists and its value is `"true"`    |
 | `isPerSeat()`      | `boolean`                  | Returns `true` when `pricingModel` is `"PER_SEAT"`                |
+| `isFlatPricing()`  | `boolean`                  | Returns `true` when the plan is not per-seat; `null` treated as flat |
 | `NONE`             | constant                   | Safe fallback with all quotas set to `1` and an empty feature map |
 
 ### `PlanFeatureGuard`
