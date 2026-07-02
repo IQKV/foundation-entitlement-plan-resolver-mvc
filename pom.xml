@@ -8,11 +8,15 @@
         <version>0.24.12</version>
     </parent>
     <groupId>com.iqkv</groupId>
-    <artifactId>foundation-audit-model</artifactId>
+    <artifactId>foundation-entitlement-plan-resolver-mvc</artifactId>
     <version>0.24.0-SNAPSHOT</version>
-    <name>Foundation Audit Model</name>
-    <description>Shared neutral data models and enums for audit logging.</description>
-    <url>https://github.com/IQKV/foundation-audit-model</url>
+    <name>Foundation Entitlement Plan Resolver</name>
+    <description>
+        Spring Boot auto-configuration library providing an in-memory plan catalog cache,
+        plan feature DTOs, feature guard, and PlanFeatureNotAvailableException for use
+        in non-reactive microservices that enforce billing plan entitlements.
+    </description>
+    <url>https://github.com/IQKV/foundation-entitlement-plan-resolver-mvc</url>
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -36,10 +40,11 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com/IQKV/foundation-audit-model.git</connection>
-        <developerConnection>scm:git:ssh://github.com:IQKV/foundation-audit-model.git</developerConnection>
-        <url>https://github.com/IQKV/foundation-audit-model/tree/dev</url>
+        <connection>scm:git:git://github.com/IQKV/foundation-entitlement-plan-resolver-mvc.git</connection>
+        <developerConnection>scm:git:ssh://github.com:IQKV/foundation-entitlement-plan-resolver-mvc.git</developerConnection>
+        <url>https://github.com/IQKV/foundation-entitlement-plan-resolver-mvc/tree/dev</url>
     </scm>
+
     <properties>
         <java.version>25</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -48,7 +53,40 @@
         <maven.gitcommitid.skip>false</maven.gitcommitid.skip>
         <jacoco.skip>true</jacoco.skip>
     </properties>
+
     <dependencies>
+        <!-- Spring Boot auto-configuration support -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+        <!-- RestTemplate lives in spring-web -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+        <!-- @Scheduled / @PostConstruct -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <!-- SLF4J API — runtime binding provided by the consuming service -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <!-- Optional: annotation processor for auto-configuration metadata -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <!-- Testing -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>com.tngtech.archunit</groupId>
             <artifactId>archunit-junit5-api</artifactId>
@@ -59,11 +97,6 @@
             <artifactId>archunit-junit5-engine</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>jakarta.annotation</groupId>
-            <artifactId>jakarta.annotation-api</artifactId>
-        </dependency>
-        
     </dependencies>
 
     <profiles>
@@ -78,8 +111,6 @@
             <activation>
                 <activeByDefault>false</activeByDefault>
             </activation>
-            <dependencies>
-            </dependencies>
         </profile>
         <profile>
             <id>production</id>
@@ -121,7 +152,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <release>${java.version}</release>
                     <parameters>true</parameters>
@@ -157,8 +187,7 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <configuration>
-                    <excludes>
-                    </excludes>
+                    <excludes/>
                 </configuration>
                 <executions>
                     <execution>
