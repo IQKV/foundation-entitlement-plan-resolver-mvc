@@ -17,7 +17,7 @@ question _"does the caller's plan include feature X?"_ at the HTTP boundary:
   completely unavailable.
 - **Feature guard** — `PlanFeatureGuard` provides a single authoritative gate with two methods:
   `hasFeature()` for conditional logic and `require()` to assert and throw on failure.
-- **Typed quota fields** — `PlanFeatures` carries `maxUsers` and `maxProjects` as named `int`
+- **Typed quota fields** — `PlanEntitlement` carries `maxUsers` and `maxProjects` as named `int`
   fields for compile-time safety, plus an open `Map<String, PlanFeature>` for extensible boolean
   features that can be added without recompilation.
 - **Auto-configured** — zero setup in the consuming service. All beans are registered via Spring
@@ -114,9 +114,9 @@ public class ProjectService {
     // ...
 
     public Project createProject(String planCode, CreateProjectRequest request) {
-        final PlanFeatures features = planResolver.forPlan(planCode);
-        if (features.maxProjects() > 0 && currentCount >= features.maxProjects()) {
-            throw new PlanQuotaExceededException("projects", features.maxProjects());
+        final PlanEntitlement entitlement = planResolver.forPlan(planCode);
+        if (entitlement.maxProjects() > 0 && currentCount >= entitlement.maxProjects()) {
+            throw new PlanQuotaExceededException("projects", entitlement.maxProjects());
         }
         // proceed with creation
     }
@@ -126,13 +126,13 @@ public class ProjectService {
 ### Conditional display logic
 
 ```java
-PlanFeatures features = planResolver.forPlan(planCode);
+PlanEntitlement entitlement = planResolver.forPlan(planCode);
 
-if (features.has("custom_domain")) {
+if (entitlement.has("custom_domain")) {
     // show custom domain settings
 }
 
-if (features.isPerSeat()) {
+if (entitlement.isPerSeat()) {
     // show per-seat billing breakdown
 }
 ```
@@ -146,7 +146,7 @@ if (features.isPerSeat()) {
 | `forPlan(String planCode)` | Returns `PlanFeatures` for the plan; falls back to `PlanFeatures.NONE` for unknown codes |
 | `refresh()` | Manually trigger a cache refresh (also runs on the configured schedule) |
 
-### `PlanFeatures`
+### `PlanEntitlement`
 
 | Member | Type | Description |
 |---|---|---|

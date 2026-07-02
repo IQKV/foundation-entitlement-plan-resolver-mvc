@@ -45,14 +45,14 @@ import java.util.Map;
  *
  * <p>Usage example — quota enforcement and feature check at write time:
  * <pre>
- *   final PlanFeatures f = planCatalogCache.forPlan(request.getHeader("X-Plan-Code"));
+ *   final PlanEntitlement f = planCatalogCache.forPlan(request.getHeader("X-Plan-Code"));
  *   if (f.maxProjects() > 0 &amp;&amp; current &gt;= f.maxProjects()) {
  *       throw new PlanQuotaExceededException(...);
  *   }
  *   if (f.has("custom_domain")) { ... }
  * </pre>
  */
-public record PlanFeatures(
+public record PlanEntitlement(
     int maxUsers,
     int maxProjects,
     Map<String, PlanFeature> features,
@@ -62,9 +62,9 @@ public record PlanFeatures(
   /**
    * Safe fallback when the plan code is unknown or the cache is empty.
    */
-  public static final PlanFeatures NONE = new PlanFeatures(1, 1, Collections.emptyMap(), null);
+  public static final PlanEntitlement NONE = new PlanEntitlement(1, 1, Collections.emptyMap(), null);
 
-  public PlanFeatures {
+  public PlanEntitlement {
     features = features != null ? Collections.unmodifiableMap(features) : Collections.emptyMap();
   }
 

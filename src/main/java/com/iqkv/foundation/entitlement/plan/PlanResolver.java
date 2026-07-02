@@ -45,7 +45,7 @@ import org.springframework.web.client.RestTemplate;
  *
  * <p>Usage — inject and call at write time:
  * <pre>
- *   final PlanFeatures features = planResolver.forPlan(request.getHeader("X-Plan-Code"));
+ *   final PlanEntitlement features = planResolver.forPlan(request.getHeader("X-Plan-Code"));
  *   if (features.maxProjects() > 0 &amp;&amp; current >= features.maxProjects()) {
  *       throw new PlanQuotaExceededException(...);
  *   }
@@ -59,10 +59,10 @@ public class PlanResolver {
   /**
    * Local DTO for deserializing the billing internal plans response.
    */
-  record PlanEntry(String planCode, PlanFeatures features) {
+  record PlanEntry(String planCode, PlanEntitlement features) {
   }
 
-  private volatile Map<String, PlanFeatures> plans = Map.of();
+  private volatile Map<String, PlanEntitlement> plans = Map.of();
 
   private final RestTemplate restTemplate;
   private final String billingServiceUrl;
@@ -108,13 +108,13 @@ public class PlanResolver {
   }
 
   /**
-   * Returns the {@link PlanFeatures} for the given plan code.
-   * Falls back to {@link PlanFeatures#NONE} when the plan code is unknown or data is unavailable.
+   * Returns the {@link PlanEntitlement} for the given plan code.
+   * Falls back to {@link PlanEntitlement#NONE} when the plan code is unknown or data is unavailable.
    */
-  public PlanFeatures forPlan(final String planCode) {
+  public PlanEntitlement forPlan(final String planCode) {
     if (planCode == null || planCode.isBlank()) {
-      return PlanFeatures.NONE;
+      return PlanEntitlement.NONE;
     }
-    return plans.getOrDefault(planCode, PlanFeatures.NONE);
+    return plans.getOrDefault(planCode, PlanEntitlement.NONE);
   }
 }
