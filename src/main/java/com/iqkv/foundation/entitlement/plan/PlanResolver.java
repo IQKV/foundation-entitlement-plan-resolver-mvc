@@ -45,8 +45,8 @@ import org.springframework.web.client.RestTemplate;
  *
  * <p>Usage — inject and call at write time:
  * <pre>
- *   final PlanEntitlement features = planResolver.resolveEntitlement(request.getHeader("X-Plan-Code"));
- *   if (features.maxProjects() > 0 &amp;&amp; current >= features.maxProjects()) {
+ *   final PlanEntitlement planEntitlement = planResolver.resolveEntitlement(request.getHeader("X-Plan-Code"));
+ *   if (planEntitlement.maxProjects() > 0 &amp;&amp; current >= planEntitlement.maxProjects()) {
  *       throw new PlanQuotaExceededException(...);
  *   }
  * </pre>
@@ -59,7 +59,7 @@ public class PlanResolver {
   /**
    * Local DTO for deserializing the billing internal plans response.
    */
-  record PlanEntry(String planCode, PlanEntitlement features) {
+  record PlanEntry(String planCode, PlanEntitlement planEntitlement) {
   }
 
   private volatile Map<String, PlanEntitlement> plans = Map.of();
