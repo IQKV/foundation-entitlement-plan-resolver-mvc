@@ -59,7 +59,7 @@ public class PlanResolver {
   /**
    * Local DTO for deserializing the billing internal plans response.
    */
-  record PlanEntry(String planCode, PlanEntitlement planEntitlement) {
+  record PlanEntry(String planCode, PlanEntitlement entitlement) {
   }
 
   private volatile Map<String, PlanEntitlement> plans = Map.of();
@@ -95,8 +95,8 @@ public class PlanResolver {
       final PlanEntry[] entries = response.getBody();
       if (entries != null && entries.length > 0) {
         plans = Arrays.stream(entries)
-            .filter(e -> e.planCode() != null && e.planEntitlement() != null)
-            .collect(Collectors.toUnmodifiableMap(PlanEntry::planCode, PlanEntry::planEntitlement));
+            .filter(e -> e.planCode() != null && e.entitlement() != null)
+            .collect(Collectors.toUnmodifiableMap(PlanEntry::planCode, PlanEntry::entitlement));
         log.info("Plan data refreshed: {} plans loaded", plans.size());
       } else {
         log.warn("Plan data refresh returned empty response — keeping last known state");
