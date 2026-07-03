@@ -95,8 +95,8 @@ public class PlanResolver {
       final PlanEntry[] entries = response.getBody();
       if (entries != null && entries.length > 0) {
         plans = Arrays.stream(entries)
-            .filter(e -> e.planCode() != null && e.features() != null)
-            .collect(Collectors.toUnmodifiableMap(PlanEntry::planCode, PlanEntry::features));
+            .filter(e -> e.planCode() != null && e.planEntitlement() != null)
+            .collect(Collectors.toUnmodifiableMap(PlanEntry::planCode, PlanEntry::planEntitlement));
         log.info("Plan data refreshed: {} plans loaded", plans.size());
       } else {
         log.warn("Plan data refresh returned empty response — keeping last known state");
