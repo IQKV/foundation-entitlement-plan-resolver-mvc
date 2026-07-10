@@ -40,7 +40,7 @@ import java.util.Map;
  * <p>{@code maxUsers} and {@code maxProjects} use {@code 0} to mean "unlimited".
  *
  * <p>{@code pricingModel} is an optional string carrying the billing pricing mode
- * ({@code "FLAT"} or {@code "PER_SEAT"}). {@code null} means the billing service has not
+ * ({@code "FLAT"}, {@code "PER_SEAT"}, or {@code "METERED"}). {@code null} means the billing service has not
  * yet been updated; treat as {@code FLAT}.
  *
  * <p>Usage example — quota enforcement and feature check at write time:
@@ -95,11 +95,18 @@ public record PlanEntitlement(
   }
 
   /**
+   * Returns {@code true} if the plan uses metered/usage-based pricing.
+   */
+  public boolean isMetered() {
+    return "METERED".equalsIgnoreCase(pricingModel);
+  }
+
+  /**
    * Returns {@code true} if the plan uses flat pricing.
    * {@code null} or unrecognised values are treated as flat — safe for existing plans
-   * that pre-date the per-seat billing feature.
+   * that pre-date the per-seat and metered billing features.
    */
   public boolean isFlatPricing() {
-    return !isPerSeat();
+    return !isPerSeat() && !isMetered();
   }
 }
