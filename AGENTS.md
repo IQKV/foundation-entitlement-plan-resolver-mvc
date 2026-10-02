@@ -71,6 +71,38 @@ project-root/
 - **Infrastructure**: Technical concerns (config, security, persistence framework)
 - **Shared Kernel**: Common code shared across bounded contexts
 
+## Execution Discipline
+
+- Root cause first. Fix the real entry point, not a bypass around it.
+- Read complete affected modules, callers, and tests before editing.
+- After two identical failures without new evidence, change approach — do not retry blindly.
+- Check relevant prerequisites early (`./mvnw verify`). Parallelize independent work.
+- Behavior proven and required gates green: finish. No speculative scope growth.
+
+## Security
+
+- Keep credentials, tokens, and private config out of commits, logs, and shared text.
+- Flag files likely to contain secrets (`.env`, `application-local.yml`) before staging.
+- No hardcoded secrets — use environment variables or Spring config properties.
+- Use exact or pinned dependency versions. Flag unusual package names before installing.
+- Never bypass `--no-verify` unless explicitly requested.
+
+## Commit Standards
+
+Format: `type(scope): subject`
+
+- Subject: imperative, lowercase, no trailing period, ≤ 72 chars
+- Types: `feat`, `fix`, `improvement`, `refactor`, `docs`, `test`, `chore`, `ci`, `perf`, `revert`
+- Scope: affected area (e.g., `plan-resolver`, `plan-cache`, `entitlement`, `guard`, `config`, `deps`)
+- For `fix`: describe the symptom and trigger, not the code change
+  - ✅ `fix(plan-cache): cache returns stale plan after billing service restart`
+  - ❌ `fix(plan-cache): add cache invalidation on startup`
+
+Examples:
+- `feat(guard): add plan feature annotation for method-level entitlement checks`
+- `fix(plan-resolver): NPE when billing service returns empty plan list`
+- `chore(deps): update spring-boot to 4.1.1`
+
 ## 🤖 AI Agent Guidelines
 
 ### AI Communication Standards
