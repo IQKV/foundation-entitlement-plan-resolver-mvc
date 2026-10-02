@@ -95,10 +95,11 @@ Format: `type(scope): subject`
 - Types: `feat`, `fix`, `improvement`, `refactor`, `docs`, `test`, `chore`, `ci`, `perf`, `revert`
 - Scope: affected area (e.g., `plan-resolver`, `plan-cache`, `entitlement`, `guard`, `config`, `deps`)
 - For `fix`: describe the symptom and trigger, not the code change
-  - ✅ `fix(plan-cache): cache returns stale plan after billing service restart`
-  - ❌ `fix(plan-cache): add cache invalidation on startup`
+    - ✅ `fix(plan-cache): cache returns stale plan after billing service restart`
+    - ❌ `fix(plan-cache): add cache invalidation on startup`
 
 Examples:
+
 - `feat(guard): add plan feature annotation for method-level entitlement checks`
 - `fix(plan-resolver): NPE when billing service returns empty plan list`
 - `chore(deps): update spring-boot to 4.1.1`
