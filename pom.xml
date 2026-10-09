@@ -134,6 +134,34 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>maven-central</id>
+            <build>
+                <plugins>
+                    <!-- Force javadoc jar creation even when no Javadoc content exists.
+                         Without this, maven-javadoc-plugin skips the jar entirely,
+                         causing Maven Central Portal bundle validation to fail. -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                                <configuration>
+                                    <doclint>none</doclint>
+                                    <failOnError>false</failOnError>
+                                    <quiet>true</quiet>
+                                    <sourcepath>${project.basedir}/src/main/java</sourcepath>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 
     <build>
