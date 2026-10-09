@@ -121,25 +121,6 @@
             <id>production</id>
         </profile>
         <profile>
-            <id>maven-central</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>attach-javadocs</id>
-                                <configuration>
-                                    <sourcepath>${project.basedir}/src/main/java</sourcepath>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
             <id>use-qulice</id>
             <build>
                 <plugins>
