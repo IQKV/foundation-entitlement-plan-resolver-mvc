@@ -134,11 +134,7 @@ jobs:
             echo "POM already has release version: $VERSION"
           fi
 
-      # Build and verify the project
-      # Ensures everything compiles and tests pass before publishing
-      - name: "Verify Build"
-        run: mvn clean verify
-
+      # Build, sign, and deploy to Maven Central in a single lifecycle run
       - name: "Deploy to Maven Central"
         run: mvn clean deploy -P maven-central
         env:

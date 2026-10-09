@@ -10,6 +10,7 @@
     <groupId>com.iqkv</groupId>
     <artifactId>foundation-entitlement-plan-resolver-mvc</artifactId>
     <version>0.24.4-SNAPSHOT</version>
+    <packaging>jar</packaging>
     <name>Foundation Entitlement Plan Resolver</name>
     <description>
         Spring Boot auto-configuration library providing an in-memory plan catalog cache,
