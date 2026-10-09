@@ -52,6 +52,8 @@
         <checkstyle.skip>false</checkstyle.skip>
         <maven.gitcommitid.skip>false</maven.gitcommitid.skip>
         <jacoco.skip>true</jacoco.skip>
+        <!-- Pin to 0.10.0 — 0.11.0 produces bundles rejected by Maven Central Portal -->
+        <maven-central-publish-plugin.version>0.10.0</maven-central-publish-plugin.version>
     </properties>
 
     <dependencies>
