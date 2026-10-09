@@ -53,8 +53,7 @@
         <checkstyle.skip>false</checkstyle.skip>
         <maven.gitcommitid.skip>false</maven.gitcommitid.skip>
         <jacoco.skip>true</jacoco.skip>
-        <!-- Pin to 0.10.0 — 0.11.0 produces bundles rejected by Maven Central Portal -->
-        <maven-central-publish-plugin.version>0.10.0</maven-central-publish-plugin.version>
+        <maven-central-publish-plugin.version>0.11.0</maven-central-publish-plugin.version>
     </properties>
 
     <dependencies>
@@ -135,12 +134,45 @@
             </build>
         </profile>
         <profile>
-            <id>maven-central</id>
+            <!--
+                Named 'publish' (not 'maven-central') to avoid merging with the
+                maven-central profile inherited from boot-parent-pom. When a child
+                and parent share the same profile id, Maven merges them — and the
+                parent's central-publishing-maven-plugin binding causes the extension
+                to skip its install-lifecycle intercept ("Preexisting publish related
+                goal bindings found"), preventing pom staging into central-staging.
+                Using a distinct id gives this project full control of the publish stack.
+            -->
+            <id>publish</id>
             <build>
                 <plugins>
-                    <!-- Force javadoc jar creation even when no Javadoc content exists.
-                         Without this, maven-javadoc-plugin skips the jar entirely,
-                         causing Maven Central Portal bundle validation to fail. -->
+                    <!-- Disable default install — central-publishing-maven-plugin
+                         (via .mvn/extensions.xml) intercepts it to stage artifacts. -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-install-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>default-install</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- Full publishing stack: sources, javadoc, GPG signing, upload. -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- Override parent's javadoc execution — parent uses delombok
+                         sourcepath which does not exist here, silently skipping the jar. -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
@@ -158,6 +190,36 @@
                                 </configuration>
                             </execution>
                         </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                                <configuration>
+                                    <gpgArguments>
+                                        <arg>--pinentry-mode</arg>
+                                        <arg>loopback</arg>
+                                    </gpgArguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>${maven-central-publish-plugin.version}</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>central</publishingServerId>
+                            <autoPublish>true</autoPublish>
+                            <waitUntil>published</waitUntil>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>

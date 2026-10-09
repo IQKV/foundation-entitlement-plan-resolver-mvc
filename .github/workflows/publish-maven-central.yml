@@ -136,7 +136,7 @@ jobs:
 
       # Build, sign, and deploy to Maven Central in a single lifecycle run
       - name: "Deploy to Maven Central"
-        run: mvn clean deploy -P maven-central
+        run: mvn clean deploy -P publish
         env:
           # OSSRH credentials from GitHub secrets
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
