@@ -101,6 +101,10 @@ public class PlanResolver {
       } else {
         log.warn("Plan data refresh returned empty response — keeping last known state");
       }
+    } catch (final BillingServiceException e) {
+      log.error("Billing service returned structured error [{}]: {} — propagating exception",
+          e.getHttpStatus(), e.getDetail());
+      throw e;
     } catch (final Exception e) {
       log.warn("Failed to refresh plan data from billing service, using last known state: {}",
           e.getMessage());

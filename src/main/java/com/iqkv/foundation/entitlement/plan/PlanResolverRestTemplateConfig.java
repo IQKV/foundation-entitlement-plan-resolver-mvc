@@ -27,6 +27,9 @@ import org.springframework.web.client.RestTemplate;
  * <p>Named to avoid ambiguity if the consuming service already defines a default RestTemplate.
  * Override by declaring your own {@code @Bean("entitlementBillingPlanRestTemplate")} — for example
  * to add auth headers, timeouts, or a custom error handler.
+ *
+ * <p>Registers {@link BillingServiceErrorHandler} to extract and preserve error details
+ * from billing service responses.
  */
 @Configuration
 public class PlanResolverRestTemplateConfig {
@@ -34,6 +37,8 @@ public class PlanResolverRestTemplateConfig {
   @Bean("entitlementBillingPlanRestTemplate")
   @ConditionalOnMissingBean(name = "entitlementBillingPlanRestTemplate")
   public RestTemplate entitlementBillingPlanRestTemplate() {
-    return new RestTemplate();
+    final var restTemplate = new RestTemplate();
+    restTemplate.setErrorHandler(new BillingServiceErrorHandler());
+    return restTemplate;
   }
 }
