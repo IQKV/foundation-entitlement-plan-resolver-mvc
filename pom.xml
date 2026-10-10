@@ -146,18 +146,6 @@
             <id>publish</id>
             <build>
                 <plugins>
-                    <!-- Disable default install — central-publishing-maven-plugin
-                         (via .mvn/extensions.xml) intercepts it to stage artifacts. -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-install-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>default-install</id>
-                                <phase>none</phase>
-                            </execution>
-                        </executions>
-                    </plugin>
                     <!-- Full publishing stack: sources, javadoc, GPG signing, upload. -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
