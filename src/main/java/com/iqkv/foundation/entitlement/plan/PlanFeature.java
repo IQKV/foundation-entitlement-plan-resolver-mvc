@@ -36,4 +36,11 @@ public record PlanFeature(
     String value,
     String description
 ) {
+
+  /**
+   * Returns {@code true} if this feature's value is the string {@code "true"} (case-insensitive).
+   */
+  public boolean isEnabled() {
+    return "true".equalsIgnoreCase(value);
+  }
 }

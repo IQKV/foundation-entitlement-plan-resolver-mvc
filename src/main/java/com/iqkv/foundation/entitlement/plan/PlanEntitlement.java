@@ -27,7 +27,8 @@ import java.util.Map;
  * <h3>Design</h3>
  * <ul>
  *   <li><b>Typed quota fields</b> ({@code maxUsers}, {@code maxProjects}) — kept as named
- *       {@code int} fields for compile-time safety. Enforce these at write time.</li>
+ *       {@code int} fields for compile-time safety. Negative values are rejected at
+ *       construction. Enforce these at write time.</li>
  *   <li><b>Open feature map</b> ({@link #features}) — extensible
  *       {@code Map<String, PlanFeature>} keyed by feature code. O(1) lookup,
  *       no duplicate codes, insertion order preserved. Adding a new feature requires
@@ -65,6 +66,12 @@ public record PlanEntitlement(
   public static final PlanEntitlement NONE = new PlanEntitlement(1, 1, Collections.emptyMap(), null);
 
   public PlanEntitlement {
+    if (maxUsers < 0) {
+      throw new IllegalArgumentException("maxUsers must be >= 0");
+    }
+    if (maxProjects < 0) {
+      throw new IllegalArgumentException("maxProjects must be >= 0");
+    }
     features = features != null ? Collections.unmodifiableMap(features) : Collections.emptyMap();
   }
 
@@ -82,7 +89,7 @@ public record PlanEntitlement(
       return false;
     }
     final PlanFeature feature = features.get(code);
-    return feature != null && "true".equalsIgnoreCase(feature.value());
+    return feature != null && feature.isEnabled();
   }
 
   /**
